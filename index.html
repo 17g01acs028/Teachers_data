@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="table" id="customers_table">
+      <section class="table__header">
+        <h1>Teacher's Data</h1>
+        <div class="input-group">
+          <input type="search" placeholder="Search Data..." />
+          <img src="images/search.png" alt="" />
+        </div>
+        <div class="export__file">
+          <label
+            for="export-file"
+            class="export__file-btn"
+            title="Export File"
+          ></label>
+          <input type="checkbox" id="export-file" />
+          <div class="export__file-options">
+            <label>Export As &nbsp; &#10140;</label>
+            <label for="export-file" id="toPDF"
+              >PDF <img src="images/pdf.png" alt=""
+            /></label>
+            <label for="export-file" id="toJSON"
+              >JSON <img src="images/json.png" alt=""
+            /></label>
+            <label for="export-file" id="toCSV"
+              >CSV <img src="images/csv.png" alt=""
+            /></label>
+            <label for="export-file" id="toEXCEL"
+              >EXCEL <img src="images/excel.png" alt=""
+            /></label>
+          </div>
+        </div>
+      </section>
+      <section class="table__body">
+        <table>
+          <thead>
+            <tr>
+              <th>ID <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Tsc Number <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Fullname <span class="icon-arrow">&UpArrow;</span></th>
+              <th>ID Number <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Phone <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Email <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Title <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Address <span class="icon-arrow">&UpArrow;</span></th>
+              <th>City <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Postal Code <span class="icon-arrow">&UpArrow;</span></th>
+              <th>NHIF <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Username <span class="icon-arrow">&UpArrow;</span></th>
+            </tr>
+          </thead>
+          <tbody id="data-table-body">
+
+          </tbody>
+        </table>
+      </section>
+      <section class="table__footer">
+        <div class="pages_details">
+            Show per Page:  &nbsp;   
+            <div class="select-dropdown" onchange="onChange()">
+                <select id="pageSize">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
+        </div>
+        <div class="pages_details">
+            page &nbsp; <p id="page"></p> &nbsp;of&nbsp; <p id="pages"></p>
+        </div>
+        <ul id="pagination">
+          <li><a class="" href="#" onclick="prev()">«</a></li>
+          <!-- <li><a href="#">1</a></li>
+          <li><a href="#" class="active">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">6</a></li>
+          <li><a href="#">7</a></li> -->
+         <li>    <a href="#" onclick="next()">»</a></li></ul>
+        </ul>
+      </section>
+    </main>
+
+    <script src="js/fetch.js"></script>
+    <script>
+        var dropDown = document.getElementById("pageSize");
+        
+
+      function next() {
+        var pagesize = parseInt(dropDown.value);
+        var pageElement = document.getElementById("page");
+        var pagesElement = document.getElementById("pages");
+
+        var page = parseInt(pageElement.innerHTML);
+        if (isNaN(page)) { 
+            page = 1;
+        }
+        var nextPage = page + 1;
+        Data(nextPage,pagesize);
+        
+    }
+        function prev(){
+        var pagesize = parseInt(dropDown.value);
+        var pageElement = document.getElementById("page");
+        var page = parseInt(pageElement.innerHTML);
+        if (isNaN(page)) { 
+            page = 1;
+        }
+        
+        var prePage = page - 1;
+
+        if(prePage > 0){
+            Data(prePage,pagesize);
+        }
+
+        }
+
+        function onChange(){
+            var pagesize = parseInt(dropDown.value);
+            var pageElement = document.getElementById("page");
+            var page = parseInt(pageElement.innerHTML);
+        if (isNaN(page)) { 
+            page = 1;
+        }
+        var nextPage = page;
+        Data(nextPage,pagesize);
+        }
+
+        Data(1,10);
+    </script>
+    <script src="script.js"></script>
+ 
+  </body>
+</html>
