@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    <!-- 
+    - favicon
+  -->
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml" />
+
+    <!-- 
+    - custom css link
+  -->
+    <link rel="stylesheet" href="../css/dashboard.css" />
+
+    <!-- 
+    - google font link
+  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 
+    - material icon link
+  -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <script>
+      setInterval(function() {
+        checkLogin();
+      }, 2000); 
+
+
+      function checkLogin(){
+          if (window.location.pathname !== '/forms/signin.html') {
+                const expireAt = localStorage.getItem("expire_at");
+                const currentTime = new Date();
+
+                // Parse expiration time from string to Date object
+                const expireAtTest = new Date(expireAt);
+
+                if (!localStorage.getItem("token") || !expireAt || !localStorage.getItem("username") || currentTime > expireAtTest) {
+                    window.location.href = '/forms/signin.html';
+                } else {
+                if (window.location.pathname !== '/dashboard/'){
+                window.location.href = '/dashboard';
+                }
+            }
+        }
+      }
+
+      checkLogin();
+    </script>
+  </head>
+
+  <body>
+    <!-- 
+    - #HEADER
+  -->
+
+    <header class="header" data-header>
+      <div class="container">
+        <h1>
+          <a href="#" class="logo">Dashboard</a>
+        </h1>
+
+        <button
+          class="menu-toggle-btn icon-box"
+          data-menu-toggle-btn
+          aria-label="Toggle Menu"
+        >
+          <span class="material-symbols-rounded icon">menu</span>
+        </button>
+
+        <nav class="navbar">
+          <div class="container">
+            <ul class="navbar-list">
+              <li>
+                <a href="#" class="navbar-link active icon-box">
+                  <span class="material-symbols-rounded icon">grid_view</span>
+
+                  <span>Home</span>
+                </a>
+              </li>
+
+              <li>
+                <a href="index.html" class="navbar-link icon-box">
+                  <span class="material-symbols-rounded icon">folder</span>
+
+                  <span>Teachers</span>
+                </a>
+              </li>
+
+              <li>
+                <a href="change_password.html" class="navbar-link icon-box">
+                  <span class="material-symbols-rounded icon">list</span>
+
+                  <span>Change Password</span>
+                </a>
+              </li>
+            </ul>
+
+            <ul class="user-action-list">
+              <li>
+                <a href="#" class="header-profile">
+                  <figure class="profile-avatar">
+                    <img
+                      src="data:image/png;base64,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"
+                      alt="Elizabeth Foster"
+                      width="32"
+                      height="32"
+                    />
+                  </figure>
+
+                  <div>
+                    <p class="profile-title" id="username"></p>
+                    <p class="profile-subtitle">Admin</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <div class="dropdown">
+                  <a class="notification icon-box dropbtn" onclick="document.getElementById('id01').style.display='flex'">
+                    <span class="material-symbols-rounded icon">
+                      arrow_circle_down
+                    </span>
+                  </a>
+                 
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <article class="container article">
+        <h2 class="h2 article-title" id="Welcome"></h2>
+
+        <p class="article-subtitle">Welcome to Dashboard!</p>
+
+        <!-- 
+        - #body
+      -->
+
+        <section class="tasks">
+         
+          <section class="table__header">
+            <div class="search-container my-search-container">
+              <form action="POST" onsubmit="search(event)">
+                <select name="column_name">
+                  <option value="all">All</option>
+                  <option value="teacher_id">ID</option>
+                  <option value="tsc_number">TSC NUMBER</option>
+                  <option value="first_name">First Name</option>
+                  <option value="lastName">Last Name</option>
+                  <option value="title">Title</option>
+                </select>
+                <input type="text" placeholder="Search.." name="value">
+                <button type="submit"> <img src="images/search.png" alt="" /></button>
+              </form>
+            </div>
+            <div class="export__file">
+              <label
+                for="export-file"
+                class="export__file-btn"
+                title="Export File"
+              ></label>
+              <input type="checkbox" id="export-file" />
+              <div class="export__file-options">
+                <label>Export As &nbsp; &#10140;</label>
+                <label for="export-file" id="toPDF"
+                  >PDF <img src="images/pdf.png" alt=""
+                /></label>
+                <label for="export-file" id="toJSON"
+                  >JSON <img src="images/json.png" alt=""
+                /></label>
+                <label for="export-file" id="toCSV"
+                  >CSV <img src="images/csv.png" alt=""
+                /></label>
+                <label for="export-file" id="toEXCEL"
+                  >EXCEL <img src="images/excel.png" alt=""
+                /></label>
+              </div>
+            </div>
+          </section>
+          <section class="table__body"  id="teacher_table">
+            <div class="loader_main">
+              <div class="loader"></div>
+            </div>
+            <div class="alert" id="error">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+              <p> <strong>Danger!</strong> <span>Indicates a dangerous or potentially negative action.</span></p>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Tsc Number <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Fullname <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>ID Number <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Phone <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Email <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Title <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Address <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>City <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Postal Code <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>NHIF <span class="icon-arrow">&UpArrow;</span></th>
+                  <th>Username <span class="icon-arrow">&UpArrow;</span></th>
+                </tr>
+              </thead>
+              <tbody id="data-table-body">
+               
+              </tbody>
+            </table>
+          </section>
+          <section class="table__footer">
+            <div class="pages_details">
+              Show per Page: &nbsp;
+              <div class="select-dropdown" onchange="onChange()">
+                <select id="pageSize">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="multi-button" id="pagination">
+                <button class="multi-button_button" onclick="firstPage()">«</button>
+                <button class="multi-button_button" onclick="prev()">
+                  &#8249;
+                </button>
+                <button class="pages_details multi-button_button">
+               <p>page&nbsp;<p id="page"></p>&nbsp;of&nbsp;<p id="pages"></p>
+               </p>
+                </button>
+                <button class="multi-button_button" onclick="next()">
+                  &#8250;
+                </button>
+                <button class="multi-button_button" onclick="lastPage()">»</button>
+              </div>
+            </div>
+          </section>
+        </section>
+      </article>
+    </main>
+
+    <!-- 
+    - #FOOTER
+  -->
+
+    <footer class="footer">
+      <div class="container">
+        <ul class="footer-list">
+          <li class="footer-item">
+            <a href="index.html" class="footer-link">Teachers</a>
+          </li>
+
+          <li class="footer-item">
+            <a href="change_password.html" class="footer-link">Change password</a>
+          </li>
+        </ul>
+
+        <p class="copyright">
+          &copy; 2024 <a href="#" class="copyright-link">Online Exam System</a>.
+          All Rights Reserved
+        </p>
+      </div>
+    </footer>
+
+    <div id="id01" class="modal">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+      <form class="modal-content" action="/action_page.php">
+        <div class="container">
+          <h1>Logout Account</h1>
+          <p>Are you sure you want to Logout your account?</p>
+        
+          <div class="clearfix">
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            <button type="button" onclick="logOut()" class="deletebtn">Logout</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <script src="../js/main.js"></script>
+    <script src="../js/login.js"></script>
+    <script src="../js/fetch.js"></script>
+    <script>
+      var dropDown = document.getElementById("pageSize");
+
+      function next() {
+        var pagesize = parseInt(dropDown.value);
+        var pageElement = document.getElementById("page");
+        var pagesElement = document.getElementById("pages");
+
+        var page = parseInt(pageElement.innerHTML.replace(/,/g, ''));
+        if (isNaN(page)) {
+          page = 1;
+        }
+        var nextPage = page + 1;
+        Data(nextPage, pagesize);
+      }
+      function prev() {
+        var pagesize = parseInt(dropDown.value);
+        var pageElement = document.getElementById("page");
+        var page = parseInt(pageElement.innerHTML.replace(/,/g, ''));
+        if (isNaN(page)) {
+          page = 1;
+        }
+
+        var prePage = page - 1;
+
+        if (prePage > 0) {
+          Data(prePage, pagesize);
+        }
+      }
+
+      function onChange() {
+        var pagesize = parseInt(dropDown.value);
+        var pageElement = document.getElementById("page");
+        var page = parseInt(pageElement.innerHTML.replace(/,/g, ''));
+        if (isNaN(page)) {
+          page = 1;
+        }
+        var nextPage = page;
+        Data(nextPage, pagesize);
+      }
+      function firstPage() {
+        var pagesize = parseInt(dropDown.value);
+        Data(1, pagesize);
+      }
+      function lastPage() {
+        var pagesize = parseInt(dropDown.value);
+        var pageElement = document.getElementById("pages");
+        var page = parseInt((pageElement.innerHTML).replace(/,/g, ''));
+        if (isNaN(page)) {
+          page = 1;
+        }
+        Data(page, pagesize);
+      }
+
+      Data(1, 10);
+    </script>
+<script src="../script.js"></script>
+  </body>
+</html>

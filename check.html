@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+.search-container {
+  border: 1px solid #ddd;
+  border-radius:0.3rem;
+  width:fit-content;
+  display: flex;
+}
+
+.search-container form {
+  display: flex;
+}
+.search-container input[type=text] {
+  padding: 9px;
+  font-size: 17px;
+  border: none;
+  outline:none;
+  max-width:300px;
+}
+.search-container select option {
+  padding: 9px;
+  font-size: 17px;
+  border: none;
+}
+
+.search-container button {
+  padding: 10px 10px;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  outline:none;
+}
+
+ .search-container select {
+  padding: 9px 10px;
+  margin-right: 0px;
+  background:white;
+  font-size: 17px;
+  border: none;
+  border-radius: 0.3rem 0 0 0.3rem;
+  border-right: 1px solid #ddd;
+  outline: none;
+  max-width: 150px;
+  min-width:50px;
+  /* Set maximum width for the select */
+}
+
+ .search-container button:hover {
+  background: #ccc;
+}
+
+.search-container img{
+    width: 20px;
+    height: 20px;
+}
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <form action="/action_page.php">
+          <select>
+           <option>All</option>
+           <option>TSC NUMBER</option>
+           <option>First Name</option>
+          </select>
+          <input type="text" placeholder="Search.." name="search">
+          <button type="submit"> <img src="./dashboard/images/search.png" alt="" /></button>
+        </form>
+      </div>
+</body>
+</html>

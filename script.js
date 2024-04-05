@@ -1,14 +1,17 @@
 
 
 const search = document.querySelector('.input-group input'),
-    table_rows = document.querySelectorAll('tbody tr'),
+    table_rows = document.querySelectorAll('table #data-table-body'),
     table_headings = document.querySelectorAll('thead th');
+
+    var table = document.querySelector('table #data-table-body');
 
 // 1. Searching for specific data of HTML table
 search.addEventListener('input', searchTable);
 
 function searchTable() {
-    table_rows.forEach((row, i) => {
+    console.log(table_rows);
+    table.querySelectorAll('tr').forEach((row, i) => {
         let table_data = row.textContent.toLowerCase(),
             search_data = search.value.toLowerCase();
 
@@ -30,7 +33,7 @@ table_headings.forEach((head, i) => {
         head.classList.add('active');
 
         document.querySelectorAll('td').forEach(td => td.classList.remove('active'));
-        table_rows.forEach(row => {
+        table.querySelectorAll('tr').forEach(row => {
             row.querySelectorAll('td')[i].classList.add('active');
         })
 
@@ -43,7 +46,7 @@ table_headings.forEach((head, i) => {
 
 
 function sortTable(column, sort_asc) {
-    [...table_rows].sort((a, b) => {
+    [...table.querySelectorAll('tr')].sort((a, b) => {
         let first_row = a.querySelectorAll('td')[column].textContent.toLowerCase(),
             second_row = b.querySelectorAll('td')[column].textContent.toLowerCase();
 
@@ -55,7 +58,7 @@ function sortTable(column, sort_asc) {
 // 3. Converting HTML table to PDF
 
 const pdf_btn = document.querySelector('#toPDF');
-const customers_table = document.querySelector('#customers_table');
+const customers_table = document.querySelector('#teacher_table');
 
 
 const toPDF = function (customers_table) {
