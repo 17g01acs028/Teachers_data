@@ -23,4 +23,4 @@ To access the interface, navigate to the provided link: [172.20.94.26/](http://1
 - **User Session**: User session information is stored in local storage.
 - **Timed Refresh**: A timed refresh occurs every 5 minutes to ensure the user session remains active and up-to-date.
 
-By leveraging these features and functionalities, users can effectively manage and access information about teachers while ensuring security and user-friendly experience.
+.
