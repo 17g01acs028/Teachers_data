@@ -233,6 +233,47 @@ body {
   position: relative;
 }
 
+/**
+     * TASKS
+     */
+.tasks {
+  box-shadow: 0 5px 10px #11111150;
+  position: relative;
+  border-radius: var(--radius-6);
+  min-height: 70vh;
+}
+
+.drawer {
+  background: var(--background);
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  z-index: 999;
+  width: 0;
+  bottom: 0;
+  right: 0; /* Start off-screen to the right */
+  transition: width 0.3s ease; 
+  border-radius: var(--radius-6);
+  display: none;
+}
+
+.drawer.show {
+  display: block;
+  right: 0; /* Reset the right property */
+  width: 100%;
+}
+.drawer_body{
+  background: white;
+  opacity: 9;
+  width: fit-content;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  border-top-right-radius: var(--radius-6);
+  border-bottom-right-radius: var(--radius-6);
+  padding: 2rem 1rem;
+  overflow: auto;
+}
 .cardhead {
 
   width: 95%;
@@ -927,6 +968,16 @@ tbody td.active {
   background: var(--blue-ryb_12);
 }
 
+
+
+.btn-danger{
+  color: #ff9966;
+  border: 1px solid #ff9966;
+  transition: var(--transition);
+}
+
+
+
 .btn-primary {
   color: var(--blue-ryb);
   border: 1px solid var(--blue-ryb);
@@ -937,6 +988,22 @@ tbody td.active {
   background: var(--blue-ryb);
   color: var(--white);
   box-shadow: 0 10px 10px -8px var(--blue-ryb);
+}
+
+.btn-danger:is(:hover, :focus) {
+  background: #ff9966;
+  color: var(--white);
+  box-shadow: 0 10px 10px -8px #ff9966;
+}
+.btn-secondary:is(:hover, :focus) {
+  background: #347C98;
+  color: var(--white);
+  box-shadow: 0 10px 10px -8px #347C98;
+}
+.btn-secondary{
+  color: #347C98;
+  border: 1px solid #347C98;
+  transition: var(--transition);
 }
 
 .card-badge {
@@ -1477,11 +1544,13 @@ tbody td.active {
   \*-----------------------------------*/
 
 .footer {
+
   position: fixed;
   bottom: 0;
   background: var(--white);
   padding-block: 25px;
   width: 100%;
+  
 }
 
 .footer-list {
@@ -1649,7 +1718,7 @@ tbody td.active {
 
 .input_card input[type=text],
 input[type=password],
-.input_card select {
+.input_card select, #filter_table select,#filter_table input[type=text] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -1657,6 +1726,12 @@ input[type=password],
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  outline: none;
+}
+.filter_buttons{
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
 }
 
 .input_card input[type=submit] {
@@ -1688,6 +1763,10 @@ input[type=password],
   justify-content: center;
   height: 70vh;
   align-items: center;
+}
+
+main{
+  margin-bottom: 50px;
 }
 
 .alert {
@@ -2015,12 +2094,7 @@ hr {
 
 
 
-  /**
-     * TASKS
-     */
-  .task {
-    box-shadow: 0 5px 10px #11111150;
-  }
+
 
   .tasks .task-card {
     grid-template-columns: 1fr 0.5fr 0.5fr;

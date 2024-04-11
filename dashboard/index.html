@@ -153,44 +153,97 @@
       -->
 
         <section class="tasks">
-         
+          <div class="drawer">
+            <div class="drawer_body">
+              <table id="filter_table">
+                <tr>
+                  <td id="filter_lable"></td>
+                  <td>
+                    <select name="column">
+                      <option value="column_field">Select Column</option>
+                      <option value="teacher_id">ID</option>
+                      <option value="tsc_number">TSC NUMBER</option>
+                      <option value="firstName">First Name</option>
+                      <option value="lastName">Last Name</option>
+                      <option value="title">Title</option>
+                      <option value="phone">Phone</option>
+                      <option value="email">Email</option>
+                      <option value="address">Address/option>
+                      <option value="city">City</option>
+                      <option value="postal_code">Postal Code</option>
+                      <option value="national_insurance_number">NHIF</option>
+                      <option value="date_of_birth">Date of birth</option>
+                      <option value="date_created">Date Created</option>
+                      <option value="date_modified">Date Modified</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select name="filter">
+                      <option value="filter-field">Select Filter Type</option>
+                      <option value=":eq:">Equals</option>
+                      <option value=":nq:">Not equal to</option>
+                      <option value=":gt:">Greater than</option>
+                      <option value=":gte:">Greater or equal to</option>
+                      <option value=":lt:">Less than</option>
+                      <option value=":lte:">Less than or equal to</option>
+                      <option value=":bt:">Between</option>
+                      <option value=":sw:">Starts with</option>
+                      <option value=":ew:">Ends with</option>
+                      <option value=":lm:">Contains</option>
+                    </select>
+                  </td>
+                  <td> 
+                    <input type="text" placeholder="value.." name="value">
+                  </td>
+                  <td>
+                    
+                  </td> 
+                </tr>
+              </table>
+              <button id="addRowBtn"  class="btn btn-primary">Add Filter</button>
+              <div class="filter_buttons">
+                <button id="cancelBtn"   class="btn btn-secondary"> Close</button>
+                <button id="submitBtn"   class="btn btn-primary"> Submit</button>
+                <button id="resetBtn"   class="btn btn-danger"> Clear</button>
+              </div>
+              
+            </div>
+          </div>
           <section class="table__header">
             <div class="search-container my-search-container">
               <form action="POST" onsubmit="search(event)">
                 <select name="column_name">
                   <option value="all">All</option>
+                  <option value="column_field">Select Column</option>
                   <option value="teacher_id">ID</option>
                   <option value="tsc_number">TSC NUMBER</option>
-                  <option value="first_name">First Name</option>
+                  <option value="firstName">First Name</option>
                   <option value="lastName">Last Name</option>
                   <option value="title">Title</option>
+                  <option value="phone">Phone</option>
+                  <option value="email">Email</option>
+                  <option value="address">Address/option>
+                  <option value="city">City</option>
+                  <option value="postal_code">Postal Code</option>
+                  <option value="national_insurance_number">NHIF</option>
+                  <option value="date_of_birth">Date of birth</option>
+                  <option value="date_created">Date Created</option>
+                  <option value="date_modified">Date Modified</option>
                 </select>
                 <input type="text" placeholder="Search.." name="value">
                 <button type="submit"> <img src="images/search.png" alt="" /></button>
               </form>
             </div>
-            <div class="export__file">
+            <div>
               <label
                 for="export-file"
-                class="export__file-btn"
+                class="export__file-btn drawer_btn"
                 title="Export File"
-              ></label>
-              <input type="checkbox" id="export-file" />
-              <div class="export__file-options">
-                <label>Export As &nbsp; &#10140;</label>
-                <label for="export-file" id="toPDF"
-                  >PDF <img src="images/pdf.png" alt=""
-                /></label>
-                <label for="export-file" id="toJSON"
-                  >JSON <img src="images/json.png" alt=""
-                /></label>
-                <label for="export-file" id="toCSV"
-                  >CSV <img src="images/csv.png" alt=""
-                /></label>
-                <label for="export-file" id="toEXCEL"
-                  >EXCEL <img src="images/excel.png" alt=""
-                /></label>
-              </div>
+              ><span class="material-symbols-rounded icon">
+                filter_list
+                </span>
+              </label>
+              
             </div>
           </section>
           <section class="table__body"  id="teacher_table">
