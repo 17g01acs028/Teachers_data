@@ -144,10 +144,7 @@
 
     <main>
       <article class="container article">
-        <h2 class="h2 article-title" id="Welcome"></h2>
-
-        <p class="article-subtitle">Welcome to Dashboard!</p>
-
+       
         <!-- 
         - #body
       -->
@@ -192,8 +189,9 @@
                       <option value=":lm:">Contains</option>
                     </select>
                   </td>
-                  <td> 
+                  <td style="display:flex;gap:6px;"> 
                     <input type="text" placeholder="value.." name="value">
+                    <input type="text" placeholder="value.." name="value" id="second_input_field">
                   </td>
                   <td>
                     
@@ -211,10 +209,9 @@
           </div>
           <section class="table__header">
             <div class="search-container my-search-container">
-              <form action="POST" onsubmit="search(event)">
-                <select name="column_name">
+              <form  onsubmit="search(event)" >
+                <select name="column_name" id="search_filter">
                   <option value="all">All</option>
-                  <option value="column_field">Select Column</option>
                   <option value="teacher_id">ID</option>
                   <option value="tsc_number">TSC NUMBER</option>
                   <option value="firstName">First Name</option>
@@ -230,17 +227,37 @@
                   <option value="date_created">Date Created</option>
                   <option value="date_modified">Date Modified</option>
                 </select>
-                <input type="text" placeholder="Search.." name="value">
-                <button type="submit"> <img src="images/search.png" alt="" /></button>
+                <input type="search" placeholder="Search.." id="search_value_field" name="value">
+                <button type="submit"> <img src="images/search.png"   alt="" /></button>
+                <button type="button" id="filter_delete_btn" style="border-left: 1px solid #ddd;">
+                  <span class="material-symbols-rounded icon">
+                 delete_history
+                 </span>
+               </button>
               </form>
+
+             
             </div>
-            <div>
+            <div class="filter_button">
               <label
                 for="export-file"
-                class="export__file-btn drawer_btn"
-                title="Export File"
+                id="filter_ad"
+                class="filter_btn drawer_btn"
+                
+                title="Filter"
               ><span class="material-symbols-rounded icon">
                 filter_list
+                </span>
+              </label>
+
+              <label
+                for="export-file"
+                id="clear_ad_filter"
+                class="filter_btn filter_clear"
+                title="Clear Filter"
+              >
+              <span class="material-symbols-rounded icon">
+                clear_all
                 </span>
               </label>
               
@@ -279,7 +296,7 @@
           <section class="table__footer">
             <div class="pages_details">
               Show per Page: &nbsp;
-              <div class="select-dropdown" onchange="onChange()">
+              <div class="select-dropdown" id="pageCount">
                 <select id="pageSize">
                   <option value="10">10</option>
                   <option value="25">25</option>
@@ -290,18 +307,18 @@
             </div>
             <div>
               <div class="multi-button" id="pagination">
-                <button class="multi-button_button" onclick="firstPage()">«</button>
-                <button class="multi-button_button" onclick="prev()">
+                <button class="multi-button_button" id="firstbtn" >«</button>
+                <button class="multi-button_button" disabled id="prevbtn" >
                   &#8249;
                 </button>
                 <button class="pages_details multi-button_button">
                <p>page&nbsp;<p id="page"></p>&nbsp;of&nbsp;<p id="pages"></p>
                </p>
                 </button>
-                <button class="multi-button_button" onclick="next()">
+                <button class="multi-button_button" id="nxtbtn" >
                   &#8250;
                 </button>
-                <button class="multi-button_button" onclick="lastPage()">»</button>
+                <button class="multi-button_button" id="lastbtn" >»</button>
               </div>
             </div>
           </section>
@@ -351,62 +368,7 @@
     <script src="../js/main.js"></script>
     <script src="../js/login.js"></script>
     <script src="../js/fetch.js"></script>
-    <script>
-      var dropDown = document.getElementById("pageSize");
-
-      function next() {
-        var pagesize = parseInt(dropDown.value);
-        var pageElement = document.getElementById("page");
-        var pagesElement = document.getElementById("pages");
-
-        var page = parseInt(pageElement.innerHTML.replace(/,/g, ''));
-        if (isNaN(page)) {
-          page = 1;
-        }
-        var nextPage = page + 1;
-        Data(nextPage, pagesize);
-      }
-      function prev() {
-        var pagesize = parseInt(dropDown.value);
-        var pageElement = document.getElementById("page");
-        var page = parseInt(pageElement.innerHTML.replace(/,/g, ''));
-        if (isNaN(page)) {
-          page = 1;
-        }
-
-        var prePage = page - 1;
-
-        if (prePage > 0) {
-          Data(prePage, pagesize);
-        }
-      }
-
-      function onChange() {
-        var pagesize = parseInt(dropDown.value);
-        var pageElement = document.getElementById("page");
-        var page = parseInt(pageElement.innerHTML.replace(/,/g, ''));
-        if (isNaN(page)) {
-          page = 1;
-        }
-        var nextPage = page;
-        Data(nextPage, pagesize);
-      }
-      function firstPage() {
-        var pagesize = parseInt(dropDown.value);
-        Data(1, pagesize);
-      }
-      function lastPage() {
-        var pagesize = parseInt(dropDown.value);
-        var pageElement = document.getElementById("pages");
-        var page = parseInt((pageElement.innerHTML).replace(/,/g, ''));
-        if (isNaN(page)) {
-          page = 1;
-        }
-        Data(page, pagesize);
-      }
-
-      Data(1, 10);
-    </script>
-<script src="../script.js"></script>
+    <script src="../js/table.js"></script>
+    <script src="../script.js"></script>
   </body>
 </html>

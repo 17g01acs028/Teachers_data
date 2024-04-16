@@ -2,12 +2,15 @@ const publicKeyPem = `-----BEGIN RSA PUBLIC KEY-----
   MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApl+uxNNb0lREYHDyg+Ug1EJGOoU+s6Rpz1SxEi74wcDVWS/Qj4mG9ocn0nkTyezpoZySJX3hRA/5Re6BbPZ4p6QWWqYds3f1L7hQknizlVbIjxM5LzWgr5LCRa06QTF8PaxaIXp/A2W40PA25NyvD4gfP80Izxm8/RJPGRlXGzar8Jpg34SDaITGoo2JPKQgjY2St/VDfi7/qYzqBfAkHW0sl+vN+/jE9/TmpuXo9GFYdDqW6T96wyJ15wPNvXQFv9ppJofZ9NBbuj+eZLSUPyqOaV021gpQyCCw1+zxL/5Atv1AmZe7M0xoDVQQK8Kffd9nOEGVddf2XWcp8LavZwIDAQAB
   -----END RSA PUBLIC KEY-----`;
 
-var filter="";
+var filter = "";
+var page = 1;
+var pages = 1;
+
 var url = "http://172.20.94.26:5000";
 
-const Data = (i, y) => {
+const Data = async (i, y) => {
 
- searchData(i,y,filter);
+  await searchData(i, y, filter);
 
 }
 
@@ -24,19 +27,71 @@ function search(event) {
     filter = '&filter=(' + column_name + ':eq:' + value + ')';
   }
 
-  searchData(1,pagesize,filter);
+  searchData(1, pagesize, filter);
 
 }
 
-function AdvancedSearch(fil){
-  filter=fil;
+const filter_clear = document.getElementById("filter_delete_btn");
+
+filter_clear.addEventListener("click",function clearSearch(){
+  console.log("clicked");
+  const selectElement = document.getElementById('search_filter');
+  const inputElement = document.getElementById('search_value_field');
+
+  // Reset the selected value of the select element to the first option
+  selectElement.selectedIndex = 0;
+
+  // Clear the input value
+  inputElement.value = '';
+
+  AdvancedSearch("");
+})
+
+function AdvancedSearch(fil) {
+  filter = fil;
   var dropDown = document.getElementById("pageSize");
   var pagesize = parseInt(dropDown.value);
 
-  searchData(1,pagesize,filter)
+  searchData(1, pagesize, filter)
 }
 
-function searchData(page,pageSize,filter) {
+function disabler(page, pages) {
+  var nextbtn = document.getElementById("nxtbtn");
+  var prevbtn = document.getElementById("prevbtn");
+  var firstbtn = document.getElementById("firstbtn");
+  var lastbtn = document.getElementById("lastbtn");
+
+  if (page <= 1) {
+    prevbtn.disabled = true;
+    firstbtn.disabled = true;
+    prevbtn.classList.add("disable");
+    firstbtn.classList.add("disable");
+  } else {
+    prevbtn.disabled = false;
+    firstbtn.disabled = false;
+    prevbtn.classList.remove("disable");
+    firstbtn.classList.remove("disable");
+  }
+
+  if (parseInt(page) + 1 > parseInt(pages)) {
+    console.log("In the truth block");
+    nextbtn.disabled = true;
+    lastbtn.disabled = true;
+    nextbtn.classList.add("disable");
+    lastbtn.classList.add("disable");
+  } else {
+    nextbtn.disabled = false;
+    lastbtn.disabled = false;
+    nextbtn.classList.remove("disable");
+    lastbtn.classList.remove("disable");
+  }
+
+  console.log("Page " + page + " and Pages is " + pages)
+
+}
+
+
+async function searchData(page, pageSize, filter) {
   //Display Error Message
   var alert = document.getElementById("error");
   var msg_body = document.querySelector("#error p span");
@@ -51,7 +106,7 @@ function searchData(page,pageSize,filter) {
   loader.style.display = "flex";
 
 
-  fetch(url+'/api/teachers?pagesize=' + pageSize + '&page=' + page + filter,
+  await fetch(url + '/api/teachers?pagesize=' + pageSize + '&page=' + page + filter,
     {
       method: 'GET',
       headers: {
@@ -79,6 +134,13 @@ function searchData(page,pageSize,filter) {
         var pages = document.getElementById("pages");
         page.innerText = parseInt(data.page).toLocaleString();
         pages.innerText = parseInt(data["pages"]).toLocaleString()
+
+        page = parseInt(data.page);
+        pages = parseInt(data["pages"]);
+
+        console.log("Page is " + page + " And pages is " + pages);
+
+        disabler(page, pages);
 
         if (Array.isArray(data.data)) {
           // Loop through the data array
@@ -227,45 +289,45 @@ function searchData(page,pageSize,filter) {
 }
 
 
-function resettable(){
-  filter="";
+function resettable() {
+  filter = "";
   const table = document.getElementById('filter_table');
 
   const rows = table.querySelectorAll('tr');
   const filter_label = document.getElementById("filter_lable");
 
   filter_label.innerText = "";
-  
+
   // Remove all rows except the first one
   for (let i = rows.length - 1; i > 0; i--) {
     rows[i].remove();
   }
-  
+
   // Reset the first row
   const firstRow = rows[0];
   const selects = firstRow.querySelectorAll('select');
   const inputs = firstRow.querySelectorAll('input');
-  
+
   selects.forEach(select => {
-    select.selectedIndex = 0; 
+    select.selectedIndex = 0;
   });
-  
+
   inputs.forEach(input => {
-    input.value = ''; 
+    input.value = '';
   });
 
   var dropDown = document.getElementById("pageSize");
   var pagesize = parseInt(dropDown.value);
 
- searchData(1,pagesize,filter);
- console.log(filter);
+  searchData(1, pagesize, filter);
+  console.log(filter);
 
 }
 
 //Login and other staffs
 
 
- 
+
 function login(e) {
 
   e.preventDefault();
@@ -275,48 +337,64 @@ function login(e) {
   var alert = document.getElementById("error");
   var msg_body = document.querySelector("#error p span");
 
+  var error = "";
+  const form = e.target;
+  form.elements['password'].style.border = '1px solid #ccc';
+  form.elements['username'].style.border = '1px solid #ccc';
+  
 
-  if(data.get("username")==="" || data.get("password") === ""){
-      msg_body.innerText = "All fields Required!!";
-      alert.style.display = "block";
-      return;
+  if (data.get("username") === "" ) {
+    error+="<li>Username Field required</li>"
+    form.elements['username'].style.border = '1px solid red';
   }
 
-  fetch(url+'/api/authentication/login',
-      {
+  if(data.get("password") === ""){
+   error+="<li>Password Field required</li>"
+   form.elements['password'].style.border = '1px solid red';
+  }
 
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-              username: data.get("username"),
-              password: encryptMessage(data.get("password"), publicKeyPem),
-          })
-      }
-  )
-      .then(response => {
-          if (!response.ok) {
-              // If response is not ok, handle the error
-              return response.json().then(errorData => {
-                  // Extract error message from the error data
-                  const errorMessage = errorData.message || 'Something went wrong';
-                  throw new Error(errorMessage);
-              });
-          }
-          return response.json();
+  if(error === "" || error === null){
+  }else{
+    msg_body.innerHTML = "<ul>"+error+"</ul>";
+    alert.style.display = "block";
+    return;
+  }
+
+  fetch(url + '/api/authentication/login',
+    {
+
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: data.get("username"),
+        password: encryptMessage(data.get("password"), publicKeyPem),
       })
-      .then(data => {
-          localStorage.setItem("token", data.token)
-          localStorage.setItem("expire_at", data.expire_time)
-          localStorage.setItem("username", data.username)
-          window.location.href = '/dashboard';
+    }
+  )
+    .then(response => {
+      if (!response.ok) {
+        // If response is not ok, handle the error
+        return response.json().then(errorData => {
+          // Extract error message from the error data
+          const errorMessage = errorData.message || 'Something went wrong';
+          throw new Error(errorMessage);
+        });
+      }
+      return response.json();
+    })
+    .then(data => {
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("expire_at", data.expire_time)
+      localStorage.setItem("username", data.username)
+      window.location.href = '/dashboard';
 
-      }).catch(error => {
-          msg_body.innerText = error;
-          alert.style.display = "block";
-          console.error(error);
-      });
+    }).catch(error => {
+      msg_body.innerText = error;
+      alert.style.display = "block";
+      console.error(error);
+    });
 }
 
 function changePassword(event) {
@@ -328,66 +406,114 @@ function changePassword(event) {
   var alert = document.getElementById("error");
   var msg_body = document.querySelector("#error p span");
 
-  if (data.get("password") === "" || data.get("password") === null || data.get("newPassword") === "" || data.get("newPassword") === null || data.get("confirmPassword") === "" || data.get("confirmPassword") === null) {
+  var error = "";
+  const form = event.target;
+  form.elements['password'].style.border = '1px solid #ccc';
+  form.elements['newPassword'].style.border = '1px solid #ccc';
+  form.elements['confirmPassword'].style.border = '1px solid #ccc';
 
-      msg_body.innerText = "All Fields are required";
-      alert.style.display = "block";
-      return false;
+  if (data.get("password") === "" || data.get("password") === null) {
+
+    error += "<li>Old password Field required</li>"
+    const passwordInput = form.elements['password'];
+    passwordInput.style.border = '1px solid red';
   }
 
-  if (data.get("newPassword") !== data.get("confirmPassword")) {
-      msg_body.innerText = "Passwords do not match, try again!!!";
-      alert.style.display = "block";
-      return false;
-  }
-  fetch(url+'/api/authentication/reset_password',
-      {
+  if (data.get("newPassword") === "" || data.get("newPassword") === null) {
 
-          method: 'PUT',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-              username: localStorage.getItem("username"),
-              password: encryptMessage(data.get("password"), publicKeyPem),
-              newPassword: encryptMessage(data.get("newPassword"), publicKeyPem),
-          })
-      }
-  )
-      .then(response => {
-          if (!response.ok) {
-              // If response is not ok, handle the error
-              return response.json().then(errorData => {
-                  // Extract error message from the error data
-                  const errorMessage = errorData.message || 'Something went wrong';
-                  throw new Error(errorMessage);
-              });
-          }
-          return response.json();
-      })
-      .then(data => {
-          localStorage.setItem("token", "")
-          localStorage.setItem("expire_at", "")
-          localStorage.setItem("username", "")
-          window.location.href = '/forms/signin.html';
-      }).catch(error => {
-          msg_body.innerText = error;
-          alert.style.display = "block";
-          console.error('There was a problem with the fetch operation:', error);
+    error += "<li>New password Field required</li>"
+    const passwordInput = form.elements['newPassword'];
+    passwordInput.style.border = '1px solid red';
+  } else {
+    let point = 0;
+    let value = form.elements['newPassword'].value;
+    if (value.length >= 6) {
+      let arrayTest =
+        [/[0-9]/, /[a-z]/, /[A-Z]/, /[^0-9a-zA-Z]/];
+      arrayTest.forEach((item) => {
+        if (item.test(value)) {
+          point += 1;
+        }
       });
+    }
+
+    console.log(point);
+
+    if (point < 4) {
+      error += "<li>Weak password please enter Strong Password</li>"
+    }
+    const passwordInput = form.elements['newPassword'];
+    passwordInput.style.border = '1px solid red';
+  }
+
+
+  if (data.get("confirmPassword") === "" || data.get("confirmPassword") === null) {
+
+    error += "<li>Confirm password Field required</li>"
+    const passwordInput = form.elements['confirmPassword'];
+    passwordInput.style.border = '1px solid red';
+  } else if (data.get("newPassword") !== data.get("confirmPassword")) {
+    error += "Passwords do not match, try again!!!";
+  }
+
+  if (error != "") {
+    msg_body.innerHTML = "<ul>" + error + "</ul>";
+    alert.style.display = "block";
+    return false;
+  }
+
+
+  fetch(url + '/api/authentication/reset_password',
+    {
+
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        username: localStorage.getItem("username"),
+        password: encryptMessage(data.get("password"), publicKeyPem),
+        newPassword: encryptMessage(data.get("newPassword"), publicKeyPem),
+      })
+    }
+  )
+    .then(response => {
+      if (!response.ok) {
+        // If response is not ok, handle the error
+        return response.json().then(errorData => {
+          // Extract error message from the error data
+          const errorMessage = errorData.message || 'Something went wrong';
+          throw new Error(errorMessage);
+        });
+      }
+      return response.json();
+    })
+    .then(data => {
+      localStorage.setItem("token", "")
+      localStorage.setItem("expire_at", "")
+      localStorage.setItem("username", "")
+      window.location.href = '/forms/signin.html';
+    }).catch(error => {
+      msg_body.innerText = error;
+      alert.style.display = "block";
+      console.error('There was a problem with the fetch operation:', error);
+    });
 }
 
 
+function checkStregth() {
 
+
+}
 
 
 function shouldRefreshToken() {
   const token = localStorage.getItem('token');
   const expirationTime = localStorage.getItem('expire_at');
   if (!token || !expirationTime) {
-      return false;
+    return false;
   }
 
   const expirationDate = new Date(expirationTime);
@@ -399,68 +525,68 @@ function shouldRefreshToken() {
 // Function to refresh the token
 async function refreshToken() {
   try {
-      const response = await fetch(url+'/api/authentication/refresh', {
-          method: 'GET',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + localStorage.getItem("token"),
-          }
-      });
-
-      if (!response.ok) {
-          const errorData = await response.json();
-          const errorMessage = errorData.message || 'Something went wrong';
-          throw new Error(errorMessage);
+    const response = await fetch(url + '/api/authentication/refresh', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token"),
       }
+    });
 
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("expire_at", data.expire_time);
-      localStorage.setItem("username", data.username);
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || 'Something went wrong';
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("expire_at", data.expire_time);
+    localStorage.setItem("username", data.username);
   } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
+    console.error('There was a problem with the fetch operation:', error);
   }
 
 }
 
-async function logOut(){
+async function logOut() {
   try {
-      const response = await fetch(url+'/api/authentication/logout', {
-          method: 'GET',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + localStorage.getItem("token"),
-          }
-      });
-
-      if (!response.ok) {
-          const errorData = await response.json();
-          const errorMessage = errorData.message || 'Something went wrong';
-          throw new Error(errorMessage);
+    const response = await fetch(url + '/api/authentication/logout', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token"),
       }
+    });
 
-      const data = await response.json();
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || 'Something went wrong';
+      throw new Error(errorMessage);
+    }
 
-      localStorage.setItem("token", "")
-      localStorage.setItem("expire_at", "")
-      localStorage.setItem("username", "")
-      window.location.href = '/forms/signin.html';
+    const data = await response.json();
+
+    localStorage.setItem("token", "")
+    localStorage.setItem("expire_at", "")
+    localStorage.setItem("username", "")
+    window.location.href = '/forms/signin.html';
   } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-  }finally{
-      localStorage.setItem("token", "")
-      localStorage.setItem("expire_at", "")
-      localStorage.setItem("username", "")
-      window.location.href = '/forms/signin.html';
+    console.error('There was a problem with the fetch operation:', error);
+  } finally {
+    localStorage.setItem("token", "")
+    localStorage.setItem("expire_at", "")
+    localStorage.setItem("username", "")
+    window.location.href = '/forms/signin.html';
   }
 
 }
 
 function checkAndRefreshToken() {
   if (shouldRefreshToken()) {
-      refreshToken();
+    refreshToken();
   }
 }
 

@@ -139,9 +139,7 @@ body {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
-  background: hsl(0, 0%, 95%);
-}
+
 
 ::-webkit-scrollbar-thumb {
   background: hsl(0, 0%, 80%);
@@ -224,10 +222,8 @@ body {
   width: 95%;
   max-height: calc(80% - 1.6rem);
   background-color: #fffb;
-
+  border-radius: 0.3rem;
   margin: .8rem auto;
-  border-radius: .6rem;
-
   overflow: auto;
   overflow: overlay;
   position: relative;
@@ -237,10 +233,12 @@ body {
      * TASKS
      */
 .tasks {
+  display: flex;
   box-shadow: 0 5px 10px #11111150;
   position: relative;
   border-radius: var(--radius-6);
-  min-height: 70vh;
+  height: calc(100vh - 14rem);
+  flex-direction: column;
 }
 
 .drawer {
@@ -292,6 +290,9 @@ body {
   padding: 1.6rem 1.6rem;
 }
 
+.table__body{
+  flex-grow: 1;
+}
 .table__body::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;
@@ -302,6 +303,7 @@ body {
   background-color: #0004;
   visibility: hidden;
 }
+
 
 .table__body:hover::-webkit-scrollbar-thumb {
   visibility: visible;
@@ -323,8 +325,7 @@ body {
 }
 
 .cardhead:hover::-webkit-scrollbar-track {
-  visibility: visible;
-  border-radius: 1rem;
+  display: none;
 }
 
 .page-wrapper-form {
@@ -662,15 +663,19 @@ tbody td.active {
 }
 
 .multi-button_button:focus {
-  background-color: #6c00bd;
+  background-color: var(--black_12);
   color: var(--secondary);
 }
 
 .multi-button_button:hover {
-  background-color: #6c00bd;
-  ;
+  background-color: var(--black_12);
   color: var(--secondary);
 }
+
+.disable { 
+  cursor: not-allowed;
+}
+
 
 .multi-button_button:first-child {
   border-radius: 10px 0 0 10px;
@@ -689,7 +694,7 @@ tbody td.active {
 
 .multi-button_button:first-child:hover,
 .multi-button_button:last-child:hover {
-  background-color: #6c00bd;
+  background-color: var(--black_12);
   ;
   color: var(--font);
 }
@@ -1046,7 +1051,41 @@ tbody td.active {
 }
 
 
+/* Filter Buttons */
+.filter_button{
+  border: 1px solid var(--black_08);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  padding: 0.6rem;
+  border-radius: var(--radius-6);
+}
 
+.filter_button .filter_btn{
+  background-color: var(--coral_12);
+  padding: 0.3rem;
+  border-radius: 50%;
+  transition:all 2s ease ;
+  border: 1px solid transparent;
+
+}
+.filter_button .filter_btn:hover{
+  opacity: 0.5;
+  border: 1px solid var(--blue-ryb);
+}
+
+
+
+.filter_button .filter_clear .filter_clear_remove{
+  display: absolute;
+}
+
+.filter_button .active {
+
+  background-color: #4CAF50;
+  color: white;
+
+}
 
 
 /*-----------------------------------*\
@@ -1070,6 +1109,52 @@ tbody td.active {
 .header.active {
   height: 370px;
   transition: 0.5s var(--cubic-out);
+}
+
+  
+#top { 
+  color: green; 
+} 
+
+.group { 
+  width: auto; 
+  text-align: center; 
+} 
+
+.group label { 
+  display: block; 
+  padding: 20px 0; 
+} 
+
+ .power-container { 
+  background-color: #2E424D; 
+  width: 100%; 
+  height: 15px; 
+  border-radius: 5px; 
+} 
+/* Input password show  */
+
+.password_input_container{
+  position: relative;
+  display: flex;
+}
+
+.password_input_container button{
+ position: absolute;
+ right: 0.9rem;
+ bottom: 30%;
+}
+
+
+/* input show password end */
+
+
+ #power-point { 
+  background-color: #D73F40; 
+  width: 0%; 
+  height: 100%; 
+  border-radius: 5px; 
+  transition: 0.5s; 
 }
 
 .header>.container {
@@ -1709,16 +1794,19 @@ tbody td.active {
   }
 
 }
-
-
-
 /**
      * FORM INPUTS
      */
 
+.input_card{
+  width: 100%;
+  min-width: 400px;
+  max-width: 500px;
+}
+
 .input_card input[type=text],
 input[type=password],
-.input_card select, #filter_table select,#filter_table input[type=text] {
+.input_card select, #filter_table select,#filter_table input {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -1960,7 +2048,7 @@ hr {
   display: flex;
 }
 
-.search-container input[type=text] {
+.search-container input[type=search] {
   padding: 9px;
   font-size: 17px;
   border: none;
