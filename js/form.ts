@@ -26,8 +26,6 @@ password.oninput = function () {
     power.style.backgroundColor = colorPower[point]; 
 };
 
-
-
 function toggleShowPassword() {
     var x = document.getElementById("myInput") as HTMLInputElement;
     if (x.type === "password") {

@@ -4,30 +4,30 @@ const publicKeyPem: string = `-----BEGIN RSA PUBLIC KEY-----
 
 
 var filter: string = "";
-var page = 1;
-var pages = 1;
+var page:number = 1;
+var pages:number = 1;
 
 var url = "http://172.20.94.26:5000";
 
-const Data = async (i: any, y: any) => {
+const Data = async (i: number, y: number) => {
 
   await searchData(i, y, filter);
 
 }
 
-function search(event: any) {
+function search(event:Event) {
   event.preventDefault();
 
-  var data: any = new FormData(event.target);
+  var data = new FormData(event.target as HTMLFormElement);
   var dropDown = document.getElementById("pageSize") as HTMLSelectElement;
   var pagesize = parseInt(dropDown && dropDown?.value);
 
-  if ((data.get("column_name") !== "" || data.get("value") !== "") && (data.get("column_name").trim() !== "all")) {
+  const columnName: string | null = data.get("column_name") as string | null;
+  if (columnName && columnName.trim() !== "all") {
     const value = data.get("value");
     const column_name = data.get("column_name");
     filter = '&filter=(' + column_name + ':eq:' + value + ')';
   }
-
   searchData(1, pagesize, filter);
 
 }
@@ -48,7 +48,7 @@ filter_clear.addEventListener("click", function clearSearch() {
   AdvancedSearch("");
 })
 
-function AdvancedSearch(fil) {
+function AdvancedSearch(fil:string) {
   filter = fil;
   var dropDown = document.getElementById("pageSize") as HTMLSelectElement;
   var pagesize = parseInt(dropDown.value);
@@ -56,7 +56,7 @@ function AdvancedSearch(fil) {
   searchData(1, pagesize, filter)
 }
 
-function disabler(page, pages) {
+function disabler(page:number, pages:number) {
   var nextbtn = document.getElementById("nxtbtn") as HTMLButtonElement;
   var prevbtn = document.getElementById("prevbtn") as HTMLButtonElement;
   var firstbtn = document.getElementById("firstbtn") as HTMLButtonElement;
@@ -74,7 +74,7 @@ function disabler(page, pages) {
     firstbtn.classList.remove("disable");
   }
 
-  if (parseInt(page) + 1 > parseInt(pages)) {
+  if (page + 1 > pages) {
     console.log("In the truth block");
     nextbtn.disabled = true;
     lastbtn.disabled = true;
@@ -92,7 +92,7 @@ function disabler(page, pages) {
 }
 
 
-async function searchData(page, pageSize, filter) {
+async function searchData(page:number, pageSize:number, filter:string) {
   //Display Error Message
   var alert = document.getElementById("error") as HTMLElement;
   var msg_body = document.querySelector("#error p span") as HTMLElement;
@@ -349,18 +349,18 @@ function resettable() {
 
 
 
-function login(e: any) {
+function login(e: Event) {
 
   e.preventDefault();
 
-  const data = new FormData(e.target);
+  const data = new FormData(e.target as HTMLFormElement);
 
   var alert = document.getElementById("error") as HTMLElement;
   var msg_body = document.querySelector("#error p span") as HTMLElement;
 
   var error = "";
   var err:boolean = false;
-  const form = e.target;
+  const form = e.target as HTMLFormElement;
   form.elements['password'].style.border = '1px solid #ccc';
   form.elements['username'].style.border = '1px solid #ccc';
 
@@ -435,17 +435,17 @@ function login(e: any) {
     });
 }
 
-function changePassword(event: any) {
+function changePassword(event: Event) {
   event.preventDefault();
   console.log("checking password")
-  const data = new FormData(event.target);
+  const data = new FormData(event.target as HTMLFormElement);
 
   console.log(data.get("password"))
   var alert = document.getElementById("error") as HTMLElement;
   var msg_body = document.querySelector("#error p span") as HTMLElement;
 
   var error = "";
-  const form = event.target;
+  const form = event.target as HTMLFormElement;
   form.elements['password'].style.border = '1px solid #ccc';
   form.elements['newPassword'].style.border = '1px solid #ccc';
   form.elements['confirmPassword'].style.border = '1px solid #ccc';
@@ -628,10 +628,9 @@ setInterval(checkAndRefreshToken, 20000);
 
 
 
-function encryptMessage(message: any, publicKeyPem: string) {
+function encryptMessage(message: string, publicKeyPem: string) {
   const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
   const encryptedData = publicKey.encrypt(message, 'RSAES-PKCS1-v1_5');
-
 
   return forge.util.encode64(encryptedData);
 }

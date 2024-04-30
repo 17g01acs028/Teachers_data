@@ -84,17 +84,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     });
 
-    function populateFiltersAndValue(selectElement) {
+    function populateFiltersAndValue(selectElement: HTMLSelectElement) {
         const column = selectElement.value;
-        const parentTr = selectElement.closest('tr'); // Find the parent tr element
-        const filterSelect = parentTr.querySelector('select[name="filter"]');
-        const parentTd = parentTr.lastElementChild.previousElementSibling;
-
-
-        const valueInputs = parentTr.querySelectorAll('input[name="value"]');
+        const parentTr = selectElement.closest('tr') as HTMLElement;
+        const filterSelect = parentTr.querySelector('select[name="filter"]') as HTMLSelectElement;
+        const parentTd = parentTr.lastElementChild ? parentTr.lastElementChild.previousElementSibling as HTMLElement : null;
+       
+        const valueInputs = parentTr.querySelectorAll<HTMLInputElement>('input[name="value"]');
         const secondValueInput = valueInputs[1];
         const firstValueInput = valueInputs[0];
-
+    
         // Clear previous options and hide the second input field
         filterSelect.innerHTML = '<option value="filter-field">Select Filter Type</option>';
         if (secondValueInput) {
@@ -197,26 +196,30 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 firstValueInput.placeholder = "value....";
             }
         });
-        console.log(parentTd);
-        parentTd.style.display = 'flex';
+        
+        if (parentTd) {
+            parentTd.style.display = 'flex';
+        } else {
+            console.error("parentTd is null");
+        }
     }
 
 
-    function addOption(selectElement, value, text) {
+    function addOption(selectElement:HTMLSelectElement, value:string, text:string) {
         const option = document.createElement('option') as HTMLOptionElement;
         option.value = value;
         option.text = text;
         selectElement.appendChild(option);
     }
 
-    table.addEventListener('click', (event:any) => {
-        if (event.target.classList.contains('removeRowBtn')) {
-            const row = event.target.closest('tr');
-            if (row !== table.rows[0]) {
+    table.addEventListener('click', (event: Event) => {
+        if ((event.target as HTMLElement).classList.contains('removeRowBtn')) {
+            const row = (event.target as HTMLElement).closest('tr');
+            if (row && row !== table.rows[0]) {
                 row.remove();
                 const remainingRows = table.querySelectorAll('tr').length;
                 if (remainingRows === 1) {
-                    filter_label.innerText = "";
+                    filter_label.innerText = '';
                 }
             }
         }
