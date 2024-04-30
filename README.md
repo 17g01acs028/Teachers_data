@@ -24,3 +24,27 @@ To access the interface, navigate to the provided link: [172.20.94.26/](http://1
 - **Timed Refresh**: A timed refresh occurs every 5 minutes to ensure the user session remains active and up-to-date.
 
 .
+# Installation Guide
+
+# 1. Clone the Repository
+git clone <repository-url>
+
+# 2. Open in Visual Studio Code
+cd <repository-directory>
+code .
+
+# 3. Run Live Server
+# Install the Live Server extension in Visual Studio Code (if not already installed)
+# Open the index.html file of the web application in Visual Studio Code
+# Right-click on the HTML file and select "Open with Live Server" to run the web pages
+
+# 4. Install TypeScript
+npm install -g typescript
+
+# 5. Convert TypeScript to JavaScript
+cd <repository-directory>/ts
+tsc <your-file>.ts
+
+# Replace <repository-url> with the URL of your repository
+# Replace <repository-directory> with the path to your cloned repository directory
+# Replace <your-file>.ts with the name of your TypeScript file
